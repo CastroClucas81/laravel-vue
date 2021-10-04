@@ -1,29 +1,60 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import CostCenter from "../views/CostCenter.vue";
+import Departament from "../views/Departament.vue";
+import Office from "../views/Office.vue";
+import Login from "../views/Login.vue";
+import User from "../views/User.vue";
+import Dashboard from "../views/Dashboard.vue";
+import NotFound from "../views/NotFound.vue";
+import Guard from "../services/middleware";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Login",
+    component: Login,
+    beforeEnter: Guard.redirectToDashboard,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    path: "/office",
+    name: "Office",
+    component: Office,
+  },
+  {
+    path: "/departament",
+    name: "Departament",
+    component: Departament,
+  },
+  {
+    path: "/cost-center",
+    name: "CostCenter",
+    component: CostCenter,
+  },
+  {
+    path: "/user",
+    name: "User",
+    component: User,
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    beforeEnter: Guard.auth,
+    component: Dashboard,
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: NotFound,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
